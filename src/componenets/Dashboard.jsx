@@ -62,20 +62,14 @@ const quickActions = [
 ];
 
 const sidebarMenu = [
-  "Dashboard",
-  "Franchise List",
+   "Dashboard",
   "Manage Students",
   "Examinations",
   "Student Exams",
   "Certificates",
   "Old Certificates",
-  "Notifications",
-  "Franchise Wallet",
   "Student Wallet",
-  "Help Support",
   "User Management",
-  "Manage Attendance",
-  "Expenses",
 ];
 
 export default function DashboardPage() {
@@ -128,6 +122,8 @@ export default function DashboardPage() {
       <div className="flex-1 flex flex-col min-h-screen">
         {/* Top Bar */}
         {/* Top Bar */}
+
+        
 <motion.div
   initial={{ y: -40, opacity: 0 }}
   animate={{ y: 0, opacity: 1 }}
