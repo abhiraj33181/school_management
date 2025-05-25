@@ -127,21 +127,47 @@ export default function DashboardPage() {
       <div className="flex-1 flex flex-col min-h-screen">
         {/* Top Bar */}
         <motion.div
-          initial={{ y: -40, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 80, damping: 14 }}
-          className="w-full h-20 bg-gradient-to-r from-indigo-700 via-indigo-600 to-blue-600 flex items-center px-4 md:px-8 shadow sticky top-0 z-20"
-        >
-          {/* Hamburger menu icon (mobile) */}
-          <button
-            className="text-white mr-4 md:hidden"
-            onClick={() => setSidebarOpen((v) => !v)}
-            aria-label="Open sidebar"
-          >
-            <HiMenu className="w-8 h-8" />
-          </button>
-          {/* Centered Welcome text in a card */}
-          <div className="flex-1 flex justify-center">
+  initial={{ y: -40, opacity: 0 }}
+  animate={{ y: 0, opacity: 1 }}
+  transition={{ type: "spring", stiffness: 80, damping: 14 }}
+  className="w-full h-20 bg-gradient-to-r from-indigo-700 via-indigo-600 to-blue-600 flex items-center px-4 md:px-8 shadow sticky top-0 z-20"
+>
+  {/* Hamburger menu icon (mobile) */}
+  <button
+    className="text-white mr-4 md:hidden"
+    onClick={() => setSidebarOpen((v) => !v)}
+    aria-label="Open sidebar"
+  >
+    <HiMenu className="w-8 h-8" />
+  </button>
+
+  {/* Empty space for left alignment */}
+  <div className="flex-grow"></div>
+
+  {/* Right: Date/time and avatar */}
+  <div className="flex items-center space-x-3">
+    <span className="text-white font-medium text-xs md:text-sm drop-shadow">
+      29-10-2023 01:36:32 PM
+    </span>
+    <img
+      src="https://randomuser.me/api/portraits/men/32.jpg"
+      alt="User"
+      className="w-10 h-10 rounded-full border-2 border-blue-200 shadow"
+    />
+  </div>
+</motion.div>
+
+
+        {/* Main Dashboard Content */}
+        <div className="flex-1 p-4 md:p-8">
+          {activeMenu === "Manage Students" ? (
+            <ManageStudents />
+          ) : activeMenu === "Courses" ? (
+            <ManageCourses />
+          ) : (
+            <>
+            {/* welcome message part  */}
+            <div className="flex-1 flex justify-center mb-5">
             <motion.div
               initial={{ scale: 0.95, opacity: 0.8 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -155,29 +181,8 @@ export default function DashboardPage() {
               <span className="ml-2 animate-wave text-2xl">👋</span>
             </motion.div>
           </div>
-          {/* Right: Date/time and avatar */}
-          <div className="flex items-center space-x-3 ml-4">
-            <span className="text-white font-medium text-xs md:text-sm drop-shadow">
-              29-10-2023 01:36:32 PM
-            </span>
-            <img
-              src="https://randomuser.me/api/portraits/men/32.jpg"
-              alt="User"
-              className="w-10 h-10 rounded-full border-2 border-blue-200 shadow"
-            />
-          </div>
-        </motion.div>
-
-        {/* Main Dashboard Content */}
-        <div className="flex-1 p-4 md:p-8">
-          {activeMenu === "Manage Students" ? (
-            <ManageStudents />
-          ) : activeMenu === "Courses" ? (
-            <ManageCourses />
-          ) : (
-            <>
               {/* Quick Actions */}
-              <div className="flex flex-wrap gap-3 md:gap-4 mb-8">
+              <div className="flex flex-wrap justify-center gap-3 md:gap-4 mb-8">
                 {quickActions.map((action, i) => (
                   <motion.button
                     whileHover={{ scale: 1.08, boxShadow: "0px 4px 24px rgba(0,0,0,0.12)" }}

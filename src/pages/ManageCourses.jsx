@@ -111,13 +111,13 @@ export default function ManageCourses() {
             <input
               type="text"
               placeholder="Search by title, instructor, or ID"
-              className="pl-10 pr-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-400 outline-none transition w-48 md:w-64"
+              className="pl-10 pr-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-400 outline-none transition w-full md:w-64"
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
           </div>
           <select
-            className="px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-400 outline-none"
+            className="px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-400 outline-none w-full md:w-auto"
             value={statusFilter}
             onChange={e => setStatusFilter(e.target.value)}
           >
@@ -135,70 +135,102 @@ export default function ManageCourses() {
             Most Popular Only
           </label>
         </div>
-        <div className="flex gap-2">
-          <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-lg flex items-center gap-2 font-semibold shadow">
+        <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
+          <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-lg flex items-center gap-2 font-semibold shadow w-full md:w-auto">
             <FiPlus /> Create Course
           </button>
-          <button className="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg flex items-center gap-2 font-semibold shadow">
+          <button className="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg flex items-center gap-2 font-semibold shadow w-full md:w-auto">
             <FiDownload /> Export CSV
           </button>
         </div>
       </div>
 
-      {/* Table/List */}
-      <div className="overflow-x-auto rounded-xl shadow bg-white">
-        <table className="min-w-full text-sm">
-          <thead>
-            <tr className="bg-indigo-50 text-indigo-900">
-              <th className="py-3 px-4 text-left">Course ID</th>
-              <th className="py-3 px-4 text-left">Title</th>
-              <th className="py-3 px-4 text-left">Instructor</th>
-              <th className="py-3 px-4 text-left">Enrolled Students</th>
-              <th className="py-3 px-4 text-left">Duration</th>
-              <th className="py-3 px-4 text-left">Status</th>
-              <th className="py-3 px-4 text-left">Completion</th>
-              <th className="py-3 px-4 text-left">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map((course, i) => (
-              <tr key={course.id} className="border-b hover:bg-indigo-50 transition">
-                <td className="py-2 px-4 font-mono">{course.id}</td>
-                <td className="py-2 px-4">{course.title}</td>
-                <td className="py-2 px-4">{course.instructor}</td>
-                <td className="py-2 px-4">{course.enrolled}</td>
-                <td className="py-2 px-4">{course.duration}</td>
-                <td className="py-2 px-4">
-                  <span className={`px-2 py-1 rounded text-xs font-bold ${course.status === "Active" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
-                    {course.status}
-                  </span>
-                </td>
-                <td className="py-2 px-4">
-                  <div className="w-24 bg-gray-100 rounded-full h-3 relative">
-                    <div
-                      className={`h-3 rounded-full ${course.completion > 80 ? "bg-green-500" : course.completion > 50 ? "bg-yellow-400" : "bg-red-400"}`}
-                      style={{ width: `${course.completion}%` }}
-                    />
-                    <span className="absolute left-1/2 -translate-x-1/2 text-xs text-gray-700 font-bold top-0">{course.completion}%</span>
-                  </div>
-                </td>
-                <td className="py-2 px-4 flex gap-2">
-                  <button title="View" className="text-blue-600 hover:text-blue-800"><FiEye /></button>
-                  <button title="Edit" className="text-indigo-600 hover:text-indigo-800"><FiEdit2 /></button>
-                  <button title="Deactivate" className="text-red-500 hover:text-red-700"><FiUserX /></button>
-                  <button title="Assign Instructor" className="text-green-600 hover:text-green-800"><FiUserCheck /></button>
-                </td>
+      {/* Table for Desktop */}
+      <div className="hidden md:block">
+        <div className="overflow-x-auto rounded-xl shadow bg-white">
+          <table className="min-w-full text-sm">
+            <thead>
+              <tr className="bg-indigo-50 text-indigo-900">
+                <th className="py-3 px-4 text-left">Course ID</th>
+                <th className="py-3 px-4 text-left">Title</th>
+                <th className="py-3 px-4 text-left">Instructor</th>
+                <th className="py-3 px-4 text-left">Enrolled Students</th>
+                <th className="py-3 px-4 text-left">Duration</th>
+                <th className="py-3 px-4 text-left">Status</th>
+                <th className="py-3 px-4 text-left">Completion</th>
+                <th className="py-3 px-4 text-left">Actions</th>
               </tr>
-            ))}
-            {filtered.length === 0 && (
-              <tr>
-                <td colSpan={8} className="text-center py-8 text-gray-400">
-                  No courses found.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filtered.map((course, i) => (
+                <tr key={course.id} className="border-b hover:bg-indigo-50 transition">
+                  <td className="py-2 px-4 font-mono">{course.id}</td>
+                  <td className="py-2 px-4">{course.title}</td>
+                  <td className="py-2 px-4">{course.instructor}</td>
+                  <td className="py-2 px-4">{course.enrolled}</td>
+                  <td className="py-2 px-4">{course.duration}</td>
+                  <td className="py-2 px-4">
+                    <span className={`px-2 py-1 rounded text-xs font-bold ${course.status === "Active" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
+                      {course.status}
+                    </span>
+                  </td>
+                  <td className="py-2 px-4">
+                    <div className="w-24 bg-gray-100 rounded-full h-3 relative">
+                      <div
+                        className={`h-3 rounded-full ${course.completion > 80 ? "bg-green-500" : course.completion > 50 ? "bg-yellow-400" : "bg-red-400"}`}
+                        style={{ width: `${course.completion}%` }}
+                      />
+                      <span className="absolute left-1/2 -translate-x-1/2 text-xs text-gray-700 font-bold top-0">{course.completion}%</span>
+                    </div>
+                  </td>
+                  <td className="py-2 px-4 flex gap-2">
+                    <button title="View" className="text-blue-600 hover:text-blue-800"><FiEye /></button>
+                    <button title="Edit" className="text-indigo-600 hover:text-indigo-800"><FiEdit2 /></button>
+                    <button title="Deactivate" className="text-red-500 hover:text-red-700"><FiUserX /></button>
+                    <button title="Assign Instructor" className="text-green-600 hover:text-green-800"><FiUserCheck /></button>
+                  </td>
+                </tr>
+              ))}
+              {filtered.length === 0 && (
+                <tr>
+                  <td colSpan={8} className="text-center py-8 text-gray-400">
+                    No courses found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* List View for Mobile */}
+      <div className="block md:hidden space-y-4">
+        {filtered.map(course => (
+          <div key={course.id} className="bg-white rounded-xl shadow p-4">
+            <div className="flex justify-between items-center mb-2">
+              <span className="font-mono text-xs text-gray-500">{course.id}</span>
+              <span className={`px-2 py-1 rounded text-xs font-bold ${course.status === "Active" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
+                {course.status}
+              </span>
+            </div>
+            <div className="font-bold text-lg mb-1">{course.title}</div>
+            <div className="text-sm text-gray-600 mb-2">Instructor: {course.instructor}</div>
+            <div className="flex flex-wrap items-center justify-between text-xs text-gray-500 mb-2 gap-2">
+              <span>Enrolled: {course.enrolled}</span>
+              <span>Duration: {course.duration}</span>
+              <span>Completion: {course.completion}%</span>
+            </div>
+            <div className="flex gap-2 mt-2">
+              <button title="View" className="text-blue-600 hover:text-blue-800"><FiEye /></button>
+              <button title="Edit" className="text-indigo-600 hover:text-indigo-800"><FiEdit2 /></button>
+              <button title="Deactivate" className="text-red-500 hover:text-red-700"><FiUserX /></button>
+              <button title="Assign Instructor" className="text-green-600 hover:text-green-800"><FiUserCheck /></button>
+            </div>
+          </div>
+        ))}
+        {filtered.length === 0 && (
+          <div className="text-center py-8 text-gray-400">No courses found.</div>
+        )}
       </div>
     </div>
   );
