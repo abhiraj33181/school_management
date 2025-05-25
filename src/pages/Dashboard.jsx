@@ -2,130 +2,80 @@ import React, { useState } from "react";
 import { HiMenu } from "react-icons/hi";
 import { motion } from "framer-motion";
 import ManageStudents from "./ManageStudents";
+import ManageCourses from "./ManageCourses";
+
 
 const dashboardCards = [
-  // ... your cards (same as before)
+  {
+    title: "Students Enquiries",
+    value: (
+      <>
+        <div>Total Enquiry: <b>3</b></div>
+        <div>Total Admission: <b>17</b></div>
+        <div>Franchise Admission: <b>2</b></div>
+        <div>Admission Count: <b>19</b></div>
+      </>
+    ),
+    bg: "bg-white",
+    text: "text-gray-800",
+  },
+  {
+    title: "Your Wallet Amount",
+    value: (
+      <>
+        <div>INR <b>35880.00</b></div>
+        <div className="text-sm text-gray-500 mt-2">Total Expenses: INR 9820.00</div>
+      </>
+    ),
+    bg: "bg-green-100",
+    text: "text-green-900",
+  },
+  {
+    title: "Fees Section",
+    value: (
+      <>
+        <div>Paid Fees: <b>45700.00</b></div>
+        <div>Balance Fees: <b>80300.00</b></div>
+        <div>Total Fees: <b>126000.00</b></div>
+      </>
+    ),
+    bg: "bg-red-100",
+    text: "text-red-900",
+  },
+  {
+    title: "Course Section",
+    value: (
+      <>
+        <div>Total Courses: <b>8</b></div>
+        <div>Total Courses Multi Subject: <b>1</b></div>
+      </>
+    ),
+    bg: "bg-green-200",
+    text: "text-green-900",
+  },
 ];
 
 const quickActions = [
-  // ... your quick actions (same as before)
+  { label: "Direct Admission", color: "bg-green-500" },
+  { label: "Fees Details", color: "bg-blue-500" },
+  { label: "Take Attendance", color: "bg-orange-500" },
+  { label: "Batch Details", color: "bg-yellow-500" },
+  { label: "Support", color: "bg-cyan-500" },
 ];
 
-// Use keys for menu items for easy comparison
 const sidebarMenu = [
-  { key: "dashboard", label: "Dashboard" },
-  { key: "manageStudents", label: "Manage Students" },
-  { key: "examinations", label: "Examinations" },
-  { key: "studentExams", label: "Student Exams" },
-  { key: "certificates", label: "Certificates" },
-  { key: "oldCertificates", label: "Old Certificates" },
-  { key: "studentWallet", label: "Student Wallet" },
-  { key: "userManagement", label: "User Management" },
+  "Dashboard",
+  "Manage Students",
+  "Courses",
+  "Student Exams",
+  "Certificates",
+  "Student Wallet",
+  "User Management",
 ];
 
 export default function DashboardPage() {
-  const [activeMenu, setActiveMenu] = useState("dashboard");
+  const [activeMenu, setActiveMenu] = useState("Dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  // Main content render logic
-  const renderContent = () => {
-    switch (activeMenu) {
-      case "dashboard":
-        return (
-          <>
-            {/* Quick Actions */}
-            <div className="flex flex-wrap gap-3 md:gap-4 mb-8">
-              {quickActions.map((action, i) => (
-                <motion.button
-                  whileHover={{ scale: 1.08, boxShadow: "0px 4px 24px rgba(0,0,0,0.12)" }}
-                  whileTap={{ scale: 0.97 }}
-                  key={action.label}
-                  className={`text-white px-4 py-2 rounded-lg font-semibold shadow-md focus:outline-none transition ${action.color}`}
-                  style={{ minWidth: 140 }}
-                >
-                  {action.label}
-                </motion.button>
-              ))}
-            </div>
-
-            {/* Dashboard Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              {dashboardCards.map((card, idx) => (
-                <motion.div
-                  key={card.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.08, duration: 0.5, type: "spring" }}
-                  className={`rounded-xl p-6 shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300 cursor-pointer ${card.bg} ${card.text} flex flex-col justify-between`}
-                >
-                  <div className="font-semibold text-lg mb-2">{card.title}</div>
-                  <div className="text-base">{card.value}</div>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Info Section */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Example: Balance Fees Report */}
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3, duration: 0.5 }}
-                className="bg-white rounded-xl shadow p-6 flex flex-col items-center"
-              >
-                <div className="font-semibold text-lg mb-2">Balance Fees Report</div>
-                <div className="flex items-center">
-                  <svg className="w-16 h-16 mr-4" viewBox="0 0 36 36">
-                    <circle
-                      cx="18"
-                      cy="18"
-                      r="16"
-                      fill="none"
-                      stroke="#e5e7eb"
-                      strokeWidth="3"
-                    />
-                    <motion.circle
-                      cx="18"
-                      cy="18"
-                      r="16"
-                      fill="none"
-                      stroke="#facc15"
-                      strokeWidth="3"
-                      strokeDasharray="100, 100"
-                      strokeDashoffset="0"
-                      initial={{ strokeDasharray: "0,100" }}
-                      animate={{ strokeDasharray: "57,100" }}
-                      transition={{ duration: 1.2, delay: 0.5 }}
-                    />
-                  </svg>
-                  <div>
-                    <div className="text-2xl font-bold">57%</div>
-                    <div className="text-gray-500">Balance Fees: 55100</div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Example: Certificates Card */}
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3, duration: 0.5 }}
-                className="bg-green-200 rounded-xl shadow p-6"
-              >
-                <div className="font-semibold text-lg mb-2">Certificates</div>
-                <div>Approval Pending: <b>0</b></div>
-                <div>Certificate Approved: <b>11</b></div>
-              </motion.div>
-            </div>
-          </>
-        );
-      case "manageStudents":
-        return <ManageStudents />;
-      // Add other menu cases and components here
-      default:
-        return <div className="p-8">Select a menu item</div>;
-    }
-  };
 
   return (
     <div className="flex min-h-screen bg-gray-100">
@@ -152,21 +102,21 @@ export default function DashboardPage() {
         {/* Menu */}
         <nav className="flex-1 mt-2 overflow-y-auto">
           <ul className="space-y-1 px-4">
-            {sidebarMenu.map((item) => (
+            {sidebarMenu.map((item, i) => (
               <li
-                key={item.key}
+                key={item}
                 onClick={() => {
-                  setActiveMenu(item.key);
-                  setSidebarOpen(false); // auto-close on mobile
+                  setActiveMenu(item);
+                  setSidebarOpen(false);
                 }}
                 className={`rounded-lg px-3 py-2 font-semibold flex items-center cursor-pointer transition
-                  ${activeMenu === item.key
+                  ${activeMenu === item
                     ? "bg-[#4f46e5] text-white"
                     : "hover:bg-[#f3f4f6] text-[#1a2340]"
                   }
                 `}
               >
-                {item.label}
+                {item}
               </li>
             ))}
           </ul>
@@ -218,9 +168,100 @@ export default function DashboardPage() {
           </div>
         </motion.div>
 
-        {/* Main Dashboard Content or Manage Students */}
+        {/* Main Dashboard Content */}
         <div className="flex-1 p-4 md:p-8">
-          {renderContent()}
+          {activeMenu === "Manage Students" ? (
+            <ManageStudents />
+          ) : activeMenu === "Courses" ? (
+            <ManageCourses />
+          ) : (
+            <>
+              {/* Quick Actions */}
+              <div className="flex flex-wrap gap-3 md:gap-4 mb-8">
+                {quickActions.map((action, i) => (
+                  <motion.button
+                    whileHover={{ scale: 1.08, boxShadow: "0px 4px 24px rgba(0,0,0,0.12)" }}
+                    whileTap={{ scale: 0.97 }}
+                    key={action.label}
+                    className={`text-white px-4 py-2 rounded-lg font-semibold shadow-md focus:outline-none transition ${action.color}`}
+                    style={{ minWidth: 140 }}
+                  >
+                    {action.label}
+                  </motion.button>
+                ))}
+              </div>
+
+              {/* Dashboard Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                {dashboardCards.map((card, idx) => (
+                  <motion.div
+                    key={card.title}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.08, duration: 0.5, type: "spring" }}
+                    className={`rounded-xl p-6 shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300 cursor-pointer ${card.bg} ${card.text} flex flex-col justify-between`}
+                  >
+                    <div className="font-semibold text-lg mb-2">{card.title}</div>
+                    <div className="text-base">{card.value}</div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Info Section */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Example: Balance Fees Report */}
+                <motion.div
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                  className="bg-white rounded-xl shadow p-6 flex flex-col items-center"
+                >
+                  <div className="font-semibold text-lg mb-2">Balance Fees Report</div>
+                  <div className="flex items-center">
+                    <svg className="w-16 h-16 mr-4" viewBox="0 0 36 36">
+                      <circle
+                        cx="18"
+                        cy="18"
+                        r="16"
+                        fill="none"
+                        stroke="#e5e7eb"
+                        strokeWidth="3"
+                      />
+                      <motion.circle
+                        cx="18"
+                        cy="18"
+                        r="16"
+                        fill="none"
+                        stroke="#facc15"
+                        strokeWidth="3"
+                        strokeDasharray="100, 100"
+                        strokeDashoffset="0"
+                        initial={{ strokeDasharray: "0,100" }}
+                        animate={{ strokeDasharray: "57,100" }}
+                        transition={{ duration: 1.2, delay: 0.5 }}
+                      />
+                    </svg>
+                    <div>
+                      <div className="text-2xl font-bold">57%</div>
+                      <div className="text-gray-500">Balance Fees: 55100</div>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Example: Certificates Card */}
+                <motion.div
+                  initial={{ opacity: 0, x: 30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                  className="bg-green-200 rounded-xl shadow p-6"
+                >
+                  <div className="font-semibold text-lg mb-2">Certificates</div>
+                  <div>Approval Pending: <b>0</b></div>
+                  <div>Certificate Approved: <b>11</b></div>
+                </motion.div>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
