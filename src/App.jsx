@@ -5,6 +5,8 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import StudentDashboard from './pages/StudentDashboard';
 import LandingPage from './pages/LandingPage';
+import Blogs from './pages/Blogs';
+import PayOnline from './pages/PayOnline';
 
 // Protected Route component
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -30,6 +32,8 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/blogs" element={<Blogs />} />
+      <Route path="/pay-online" element={<PayOnline />} />
       
       {/* Admin Routes */}
       <Route

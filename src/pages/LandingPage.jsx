@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 
 const LandingPage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeNav, setActiveNav] = useState('Home');
   const aboutRef = useRef(null);
   const coursesRef = useRef(null);
   const servicesRef = useRef(null);
@@ -16,6 +17,17 @@ const LandingPage = () => {
   const scrollToSection = (ref) => {
     ref.current?.scrollIntoView({ behavior: 'smooth' });
     setIsMenuOpen(false);
+  };
+
+  const handleNavClick = (name, href) => {
+    setActiveNav(name);
+    if (href === '#about') {
+      scrollToSection(aboutRef);
+    } else if (href === '#features') {
+      scrollToSection(coursesRef);
+    } else if (href === '#contact') {
+      scrollToSection(contactRef);
+    }
   };
 
   const features = [
@@ -224,6 +236,15 @@ const LandingPage = () => {
     }
   ];
 
+  const navigation = [
+    { name: 'Home', href: '/' },
+    { name: 'About', href: '#about' },
+    { name: 'Features', href: '#features' },
+    { name: 'Blogs', href: '/blogs' },
+    { name: 'Contact', href: '#contact' },
+    { name: 'Pay Online', href: '/pay-online', isHighlighted: true },
+  ];
+
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
       {/* Navigation Bar */}
@@ -243,46 +264,62 @@ const LandingPage = () => {
             
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center space-x-8">
-              <motion.button 
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => scrollToSection(aboutRef)} 
-                className="text-gray-700 hover:text-blue-600 transition duration-300"
-              >
-                Home
-              </motion.button>
-              <motion.button 
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => scrollToSection(aboutRef)} 
-                className="text-gray-700 hover:text-blue-600 transition duration-300"
-              >
-                About Us
-              </motion.button>
-              <motion.button 
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => scrollToSection(coursesRef)} 
-                className="text-gray-700 hover:text-blue-600 transition duration-300"
-              >
-                Courses
-              </motion.button>
-              <motion.button 
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => scrollToSection(servicesRef)} 
-                className="text-gray-700 hover:text-blue-600 transition duration-300"
-              >
-                Services
-              </motion.button>
-              <motion.button 
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => scrollToSection(contactRef)} 
-                className="text-gray-700 hover:text-blue-600 transition duration-300"
-              >
-                Contact
-              </motion.button>
+              {navigation.map((item) => (
+                item.isHighlighted ? (
+                  <motion.div
+                    key={item.name}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Link
+                      to={item.href}
+                      className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition duration-300"
+                    >
+                      {item.name}
+                    </Link>
+                  </motion.div>
+                ) : (
+                  <motion.button 
+                    key={item.name}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => handleNavClick(item.name, item.href)}
+                    className={`relative px-3 py-2 text-gray-700 hover:text-blue-600 transition duration-300 ${
+                      activeNav === item.name ? 'text-blue-600 font-semibold' : ''
+                    }`}
+                  >
+                    {item.href.startsWith('#') ? (
+                      <>
+                        {item.name}
+                        {activeNav === item.name && (
+                          <motion.div
+                            layoutId="activeNav"
+                            className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600"
+                            initial={false}
+                            transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                          />
+                        )}
+                      </>
+                    ) : (
+                      <Link 
+                        to={item.href}
+                        onClick={() => handleNavClick(item.name, item.href)}
+                        className="relative"
+                      >
+                        {item.name}
+                        {activeNav === item.name && (
+                          <motion.div
+                            layoutId="activeNav"
+                            className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600"
+                            initial={false}
+                            transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                          />
+                        )}
+                      </Link>
+                    )}
+                  </motion.button>
+                )
+              ))}
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -336,41 +373,47 @@ const LandingPage = () => {
               </button>
             </div>
             <div className="px-4 pt-2 pb-3 space-y-1">
-              <motion.button 
-                whileHover={{ x: 10 }}
-                onClick={() => scrollToSection(aboutRef)} 
-                className="block w-full text-left px-3 py-2 text-gray-700 hover:text-blue-600 text-lg"
-              >
-                Home
-              </motion.button>
-              <motion.button 
-                whileHover={{ x: 10 }}
-                onClick={() => scrollToSection(aboutRef)} 
-                className="block w-full text-left px-3 py-2 text-gray-700 hover:text-blue-600 text-lg"
-              >
-                About Us
-              </motion.button>
-              <motion.button 
-                whileHover={{ x: 10 }}
-                onClick={() => scrollToSection(coursesRef)} 
-                className="block w-full text-left px-3 py-2 text-gray-700 hover:text-blue-600 text-lg"
-              >
-                Courses
-              </motion.button>
-              <motion.button 
-                whileHover={{ x: 10 }}
-                onClick={() => scrollToSection(servicesRef)} 
-                className="block w-full text-left px-3 py-2 text-gray-700 hover:text-blue-600 text-lg"
-              >
-                Services
-              </motion.button>
-              <motion.button 
-                whileHover={{ x: 10 }}
-                onClick={() => scrollToSection(contactRef)} 
-                className="block w-full text-left px-3 py-2 text-gray-700 hover:text-blue-600 text-lg"
-              >
-                Contact
-              </motion.button>
+              {navigation.map((item) => (
+                item.isHighlighted ? (
+                  <motion.div 
+                    key={item.name}
+                    whileHover={{ x: 10 }}
+                    className="mt-4"
+                  >
+                    <Link
+                      to={item.href}
+                      className="block w-full text-center px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-lg"
+                    >
+                      {item.name}
+                    </Link>
+                  </motion.div>
+                ) : (
+                  <motion.button 
+                    key={item.name}
+                    whileHover={{ x: 10 }}
+                    onClick={() => {
+                      handleNavClick(item.name, item.href);
+                      setIsMenuOpen(false);
+                    }}
+                    className={`block w-full text-left px-3 py-2 text-lg transition duration-300 ${
+                      activeNav === item.name 
+                        ? 'text-blue-600 bg-blue-50 rounded-md font-semibold' 
+                        : 'text-gray-700 hover:text-blue-600'
+                    }`}
+                  >
+                    {item.href.startsWith('#') ? (
+                      item.name
+                    ) : (
+                      <Link 
+                        to={item.href}
+                        onClick={() => handleNavClick(item.name, item.href)}
+                      >
+                        {item.name}
+                      </Link>
+                    )}
+                  </motion.button>
+                )
+              ))}
               <motion.div whileHover={{ x: 10 }} className="mt-4">
                 <Link
                   to="/login"
