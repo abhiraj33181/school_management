@@ -3,7 +3,11 @@ import { HiMenu } from "react-icons/hi";
 import { motion } from "framer-motion";
 import ManageStudents from "./ManageStudents";
 import ManageCourses from "./ManageCourses";
-
+import FeesDetails from "./FeesDetails";
+import ManageExams from "./ManageExams";
+import Certificates from "./Certificates";
+import UserManagement from "./UserManagement";
+import { FaImage, FaQuoteLeft, FaCog, FaNewspaper } from 'react-icons/fa';
 
 const dashboardCards = [
   {
@@ -20,11 +24,12 @@ const dashboardCards = [
     text: "text-gray-800",
   },
   {
-    title: "Your Wallet Amount",
+    title: "Fees Overview",
     value: (
       <>
-        <div>INR <b>35880.00</b></div>
-        <div className="text-sm text-gray-500 mt-2">Total Expenses: INR 9820.00</div>
+        <div>Total Fees: <b>₹126000.00</b></div>
+        <div>Paid Fees: <b>₹45700.00</b></div>
+        <div>Balance: <b>₹80300.00</b></div>
       </>
     ),
     bg: "bg-green-100",
@@ -63,13 +68,41 @@ const quickActions = [
   { label: "Support", color: "bg-cyan-500" },
 ];
 
+const websiteManagement = [
+  {
+    title: "Carousel Images",
+    icon: <FaImage className="w-6 h-6" />,
+    description: "Manage homepage slider images",
+    color: "from-blue-500 to-blue-600"
+  },
+  {
+    title: "Testimonials",
+    icon: <FaQuoteLeft className="w-6 h-6" />,
+    description: "Manage student testimonials",
+    color: "from-purple-500 to-purple-600"
+  },
+  {
+    title: "News & Updates",
+    icon: <FaNewspaper className="w-6 h-6" />,
+    description: "Manage news and announcements",
+    color: "from-green-500 to-green-600"
+  },
+  {
+    title: "Website Settings",
+    icon: <FaCog className="w-6 h-6" />,
+    description: "Configure website settings",
+    color: "from-red-500 to-red-600"
+  }
+];
+
 const sidebarMenu = [
   "Dashboard",
   "Manage Students",
   "Courses",
   "Student Exams",
   "Certificates",
-  "Student Wallet",
+  "Fees Details",
+  "Website Management",
   "User Management",
 ];
 
@@ -82,7 +115,7 @@ export default function DashboardPage() {
       {/* Sidebar */}
       <aside
         className={`
-          fixed z-30 top-0 left-0 h-full w-64 bg-white shadow-lg flex flex-col
+          fixed z-30 top-0 left-0 h-screen w-64 bg-gradient-to-b from-indigo-900 to-indigo-800 shadow-lg flex flex-col
           transition-transform duration-300
           ${sidebarOpen ? "translate-x-0" : "-translate-x-64"}
           md:translate-x-0 md:static md:block
@@ -90,18 +123,18 @@ export default function DashboardPage() {
       >
         {/* Logo + Title */}
         <div className="flex flex-col items-center pt-6 pb-2">
-          <div className="w-16 h-16 rounded-full bg-white shadow border-4 border-[#e0e7ff] flex items-center justify-center mb-2">
+          <div className="w-16 h-16 rounded-full bg-white shadow-lg border-4 border-indigo-200 flex items-center justify-center mb-2">
             <img
               src="https://static.vecteezy.com/system/resources/previews/046/006/102/non_2x/education-logo-design-template-for-school-and-organization-vector.jpg"
               alt="Logo"
               className="w-10 h-10 object-contain"
             />
           </div>
-          <span className="text-lg font-bold text-[#1a2340]">Quanta Computer</span>
+          <span className="text-lg font-bold text-white">Quanta Computer</span>
         </div>
         {/* Menu */}
-        <nav className="flex-1 mt-2 overflow-y-auto">
-          <ul className="space-y-1 px-4">
+        <nav className="flex-1 mt-2 overflow-y-auto px-4">
+          <ul className="space-y-2">
             {sidebarMenu.map((item, i) => (
               <li
                 key={item}
@@ -109,10 +142,10 @@ export default function DashboardPage() {
                   setActiveMenu(item);
                   setSidebarOpen(false);
                 }}
-                className={`rounded-lg px-3 py-2 font-semibold flex items-center cursor-pointer transition
+                className={`rounded-lg px-3 py-2.5 font-semibold flex items-center cursor-pointer transition-all duration-200
                   ${activeMenu === item
-                    ? "bg-[#4f46e5] text-white"
-                    : "hover:bg-[#f3f4f6] text-[#1a2340]"
+                    ? "bg-white text-indigo-900 shadow-lg"
+                    : "text-indigo-100 hover:bg-indigo-700/50 hover:text-white"
                   }
                 `}
               >
@@ -121,42 +154,53 @@ export default function DashboardPage() {
             ))}
           </ul>
         </nav>
+        
+        {/* Sidebar Footer */}
+        <div className="p-4 border-t border-indigo-700/50">
+          <div className="flex items-center space-x-3">
+            <img
+              src="https://randomuser.me/api/portraits/men/32.jpg"
+              alt="User"
+              className="w-10 h-10 rounded-full border-2 border-indigo-200"
+            />
+            <div>
+              <p className="text-sm font-medium text-white">Admin User</p>
+              <p className="text-xs text-indigo-200">Administrator</p>
+            </div>
+          </div>
+        </div>
       </aside>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-h-screen">
         {/* Top Bar */}
         <motion.div
-  initial={{ y: -40, opacity: 0 }}
-  animate={{ y: 0, opacity: 1 }}
-  transition={{ type: "spring", stiffness: 80, damping: 14 }}
-  className="w-full h-20 bg-gradient-to-r from-indigo-700 via-indigo-600 to-blue-600 flex items-center px-4 md:px-8 shadow sticky top-0 z-20"
->
-  {/* Hamburger menu icon (mobile) */}
-  <button
-    className="text-white mr-4 md:hidden"
-    onClick={() => setSidebarOpen((v) => !v)}
-    aria-label="Open sidebar"
-  >
-    <HiMenu className="w-8 h-8" />
-  </button>
+          initial={{ y: -40, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 80, damping: 14 }}
+          className="w-full h-20 bg-gradient-to-r from-indigo-700 via-indigo-600 to-blue-600 flex items-center px-4 md:px-8 shadow sticky top-0 z-20"
+        >
+          <button
+            className="text-white mr-4 md:hidden"
+            onClick={() => setSidebarOpen((v) => !v)}
+            aria-label="Open sidebar"
+          >
+            <HiMenu className="w-8 h-8" />
+          </button>
 
-  {/* Empty space for left alignment */}
-  <div className="flex-grow"></div>
+          <div className="flex-grow"></div>
 
-  {/* Right: Date/time and avatar */}
-  <div className="flex items-center space-x-3">
-    <span className="text-white font-medium text-xs md:text-sm drop-shadow">
-      29-10-2023 01:36:32 PM
-    </span>
-    <img
-      src="https://randomuser.me/api/portraits/men/32.jpg"
-      alt="User"
-      className="w-10 h-10 rounded-full border-2 border-blue-200 shadow"
-    />
-  </div>
-</motion.div>
-
+          <div className="flex items-center space-x-3">
+            <span className="text-white font-medium text-xs md:text-sm drop-shadow">
+              29-10-2023 01:36:32 PM
+            </span>
+            <img
+              src="https://randomuser.me/api/portraits/men/32.jpg"
+              alt="User"
+              className="w-10 h-10 rounded-full border-2 border-blue-200 shadow"
+            />
+          </div>
+        </motion.div>
 
         {/* Main Dashboard Content */}
         <div className="flex-1 p-4 md:p-8">
@@ -164,23 +208,53 @@ export default function DashboardPage() {
             <ManageStudents />
           ) : activeMenu === "Courses" ? (
             <ManageCourses />
+          ) : activeMenu === "Fees Details" ? (
+            <FeesDetails />
+          ) : activeMenu === "Student Exams" ? (
+            <ManageExams />
+          ) : activeMenu === "Certificates" ? (
+            <Certificates />
+          ) : activeMenu === "User Management" ? (
+            <UserManagement />
+          ) : activeMenu === "Website Management" ? (
+            <div className="space-y-8">
+              <h2 className="text-2xl font-bold text-gray-900">Website Management</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {websiteManagement.map((item, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className={`bg-gradient-to-r ${item.color} rounded-xl shadow-lg p-6 text-white hover:shadow-2xl transition duration-300 cursor-pointer`}
+                  >
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-xl font-semibold">{item.title}</h3>
+                      {item.icon}
+                    </div>
+                    <p className="text-white/80">{item.description}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           ) : (
             <>
-            {/* welcome message part  */}
-            <div className="flex-1 flex justify-center mb-5">
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0.8 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.15, duration: 0.4 }}
-              className="bg-white px-8 py-3 rounded-xl shadow-lg border border-blue-100 flex items-center gap-2"
-              style={{ minWidth: 220 }}
-            >
-              <span className="text-indigo-800 text-base md:text-xl font-bold tracking-wide drop-shadow">
-                Welcome To COMPUTER ACADAMY
-              </span>
-              <span className="ml-2 animate-wave text-2xl">👋</span>
-            </motion.div>
-          </div>
+              {/* Welcome message */}
+              <div className="flex-1 flex justify-center mb-5">
+                <motion.div
+                  initial={{ scale: 0.95, opacity: 0.8 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.15, duration: 0.4 }}
+                  className="bg-white px-8 py-3 rounded-xl shadow-lg border border-blue-100 flex items-center gap-2"
+                  style={{ minWidth: 220 }}
+                >
+                  <span className="text-indigo-800 text-base md:text-xl font-bold tracking-wide drop-shadow">
+                    Welcome To COMPUTER ACADAMY
+                  </span>
+                  <span className="ml-2 animate-wave text-2xl">👋</span>
+                </motion.div>
+              </div>
+
               {/* Quick Actions */}
               <div className="flex flex-wrap justify-center gap-3 md:gap-4 mb-8">
                 {quickActions.map((action, i) => (
@@ -214,7 +288,7 @@ export default function DashboardPage() {
 
               {/* Info Section */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Example: Balance Fees Report */}
+                {/* Balance Fees Report */}
                 <motion.div
                   initial={{ opacity: 0, x: -30 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -253,7 +327,7 @@ export default function DashboardPage() {
                   </div>
                 </motion.div>
 
-                {/* Example: Certificates Card */}
+                {/* Certificates Card */}
                 <motion.div
                   initial={{ opacity: 0, x: 30 }}
                   animate={{ opacity: 1, x: 0 }}

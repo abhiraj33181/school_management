@@ -1,18 +1,68 @@
-import './App.css'
-import { Routes, Route } from "react-router-dom";
-import Dashboard from './pages/Dashboard'
-import LoginPage from './componenets/LoginPage'
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import StudentDashboard from './pages/StudentDashboard';
+import LandingPage from './pages/LandingPage';
 
-function App() {
+// Protected Route component
+const ProtectedRoute = ({ children, allowedRoles }) => {
+  const { user, loading } = useAuth();
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
+    return <Navigate to="/" />;
+  }
+
+  return children;
+};
+
+const AppRoutes = () => {
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-      </Routes>
-    </>
-  )
-}
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/login" element={<Login />} />
+      
+      {/* Admin Routes */}
+      <Route
+        path="/dashboard/*"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
 
-export default App
+      {/* Student Routes */}
+      <Route
+        path="/student-dashboard"
+        element={
+          <ProtectedRoute allowedRoles={['student']}>
+            <StudentDashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Fallback route */}
+      <Route path="*" element={<Navigate to="/" />} />
+    </Routes>
+  );
+};
+
+const App = () => {
+  return (
+    <AuthProvider>
+      <AppRoutes />
+    </AuthProvider>
+  );
+};
+
+export default App;
