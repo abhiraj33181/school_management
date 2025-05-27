@@ -249,9 +249,9 @@ export default function DashboardPage() {
                   style={{ minWidth: 220 }}
                 >
                   <span className="text-indigo-800 text-base md:text-xl font-bold tracking-wide drop-shadow">
-                    Welcome To COMPUTER ACADAMY
-                  </span>
-                  <span className="ml-2 animate-wave text-2xl">👋</span>
+                    Welcome To Institute Management Portal
+                  </span> 
+                  {/* <span className="ml-2 animate-wave text-2xl">👋</span> */}
                 </motion.div>
               </div>
 
